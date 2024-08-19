@@ -11,11 +11,14 @@
 " `vim -u foo`).
 set nocompatible
 
+" Set language to English
+language en_US.utf8
+
 " Turn on syntax highlighting.
 syntax on
 
-" Disable audible bell because it's annoying.
-set noerrorbells visualbell t_vb=
+" Disable sound and visual bell because they are annoying
+set belloff=all
 
 " Enable mouse support. You should avoid relying on this too much, but it can
 " sometimes be convenient.
