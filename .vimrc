@@ -12,7 +12,7 @@
 set nocompatible
 
 " Set language to English
-language en_US.utf8
+let $LANG="en"
 
 " Turn on syntax highlighting.
 syntax on
