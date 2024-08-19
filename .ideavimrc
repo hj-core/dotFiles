@@ -23,8 +23,6 @@ map <leader>r <Action>(ReformatCode)
 map <leader>d <Action>(QuickJavaDoc)
 map <leader>o <Action>(OverrideMethods)
 map <leader>i <Action>(ImplementMethods)
-"map <leader>d <Action>(Debug)
-"map <leader>b <Action>(ToggleLineBreakpoint)
 
 "" --- General options ---
 " Vim is based on Vi. Setting `nocompatible` switches from the default
