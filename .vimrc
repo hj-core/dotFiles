@@ -11,9 +11,6 @@
 " `vim -u foo`).
 set nocompatible
 
-" Set language to English
-let $LANG="en"
-
 " Turn on syntax highlighting.
 syntax on
 
