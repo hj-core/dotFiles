@@ -8,6 +8,7 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'easymotion/vim-easymotion'
 Plug 'preservim/nerdtree'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
 
 set ideajoin
 
