@@ -109,3 +109,6 @@ inoremap <Down>  <ESC>:echoe "Use j"<CR>
 " Mapping for easymotion
 nmap s <Plug>(easymotion-overwin-f2)
 let EasyMotion_smartcase = 1
+
+" Other key mappings
+map <Space> <C-w>
