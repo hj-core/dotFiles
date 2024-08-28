@@ -16,7 +16,7 @@ filetype plugin indent on
 set nocompatible
 
 " Turn on syntax highlighting.
-syntax on
+syntax enable
 
 " Disable sound and visual bell because they are annoying
 set belloff=all
