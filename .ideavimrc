@@ -10,12 +10,9 @@ Plug 'preservim/nerdtree'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 
+"" --- Idea specific options ---
 set ideajoin
 
-set easymotion
-nmap s <Plug>(easymotion-s2)
-
-"" --- Idea specific options ---
 " Uses the IDEs own paste implementation for put operations
 " rather than simply inserting the text.
 set clipboard+=ideaput
@@ -26,6 +23,11 @@ map <leader>o <Action>(OverrideMethods)
 map <leader>i <Action>(ImplementMethods)
 
 "" --- General options ---
+filetype plugin indent on
+
+set easymotion
+nmap s <Plug>(easymotion-s2)
+
 " Vim is based on Vi. Setting `nocompatible` switches from the default
 " Vi-compatibility mode and enables useful Vim functionality. This
 " configuration option turns out not to be necessary for the file named
@@ -36,7 +38,7 @@ map <leader>i <Action>(ImplementMethods)
 set nocompatible
 
 " Turn on syntax highlighting.
-syntax on
+syntax enable
 
 " Disable sound and visual bell because they are annoying
 set belloff=all
@@ -129,4 +131,4 @@ inoremap <Up>    <ESC>:echoe "Use k"<CR>
 inoremap <Down>  <ESC>:echoe "Use j"<CR>
 
 " Other key mappings
-map <Space> <C-w>
+nmap <Space> <C-w>
