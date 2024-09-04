@@ -12,6 +12,7 @@ Plug 'tpope/vim-commentary'
 
 "" --- Idea specific options ---
 set ideajoin
+set idearefactormode=keep
 
 " Uses the IDEs own paste implementation for put operations
 " rather than simply inserting the text.
