@@ -1,4 +1,6 @@
-colorscheme slate
+" https://github.com/jaredgorski/Mies.vim.git
+set background=dark
+colorscheme mies
 
 " Comments in Vimscript start with a `"`.
 
