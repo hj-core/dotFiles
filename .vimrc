@@ -1,6 +1,6 @@
-" https://github.com/jaredgorski/Mies.vim.git
-set background=dark
-colorscheme mies
+" https://github.com/morhetz/gruvbox.git
+colorscheme gruvbox
+let g:gruvbox_italic = 0
 
 " Comments in Vimscript start with a `"`.
 
