@@ -1,6 +1,7 @@
 " https://github.com/morhetz/gruvbox.git
 set background=dark
 colorscheme gruvbox
+let g:gruvbox_bold = 0
 let g:gruvbox_italic = 0
 
 " Comments in Vimscript start with a `"`.
