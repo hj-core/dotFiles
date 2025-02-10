@@ -1,6 +1,6 @@
 " https://github.com/igemnace/highlight.vim.git
 set background=dark
-colorscheme highlight
+colorscheme monokai
 
 " Comments in Vimscript start with a `"`.
 
