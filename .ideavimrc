@@ -18,7 +18,7 @@ set idearefactormode=keep
 " rather than simply inserting the text.
 set clipboard+=ideaput
 
-map <leader>r <Action>(ReformatCode)
+map <leader>r <Action>(ReformatCode)<Action>(OptimizeImports)
 map <leader>d <Action>(QuickJavaDoc)
 map <leader>o <Action>(OverrideMethods)
 map <leader>i <Action>(ImplementMethods)
