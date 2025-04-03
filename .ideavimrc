@@ -18,7 +18,13 @@ set idearefactormode=keep
 " rather than simply inserting the text.
 set clipboard+=ideaput
 
-map <leader>r <Action>(ReformatCode)<Action>(OptimizeImports)
+if &ide =~? 'rustrover'
+    map <leader>r <Action>(Cargo.RustfmtFile)
+    map <leader>R <Action>(Cargo.RustfmtCargoProject)
+else
+    map <leader>r <Action>(OptimizeImports)<Action>(ReformatCode)
+endif
+
 map <leader>d <Action>(QuickJavaDoc)
 map <leader>o <Action>(OverrideMethods)
 map <leader>i <Action>(ImplementMethods)
