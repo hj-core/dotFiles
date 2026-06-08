@@ -1,12 +1,14 @@
-" https://github.com/igemnace/highlight.vim.git
+" True color support is required for the theme to look right
+if (has("termguicolors"))
+  set termguicolors
+endif
+
+" Enable the colorscheme
+" sonoki
+" https://github.com/sainnhe/sonokai.git
 set background=dark
-colorscheme monokai
-
-" Comments in Vimscript start with a `"`.
-
-" If you open this file in Vim, it'll be syntax highlighted for you.
-
-filetype plugin indent on
+let g:sonokai_style = "espresso"
+colorscheme sonokai
 
 " Vim is based on Vi. Setting `nocompatible` switches from the default
 " Vi-compatibility mode and enables useful Vim functionality. This
@@ -16,6 +18,8 @@ filetype plugin indent on
 " loaded some other way (e.g. saved as `foo`, and then Vim started with
 " `vim -u foo`).
 set nocompatible
+
+filetype plugin indent on
 
 " Turn on syntax highlighting.
 syntax enable
