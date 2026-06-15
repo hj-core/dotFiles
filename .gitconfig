@@ -1,0 +1,31 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+    name = your name
+    email = your email
+[core]
+    editor = nvim
+[alias]
+    br = branch
+    co = checkout
+    ci = commit
+    st = status
+    difs = diff --staged
+    ss = stash
+    ssl = stash list
+    ssa = stash apply
+    ssp = stash pop
+    cp = cherry-pick
+    cpa = cherry-pick --abort
+    cpc = cherry-pick --continue
+    rb = rebase
+    rbi = rebase -i
+    rba = rebase --abort
+    rbc = rebase --continue
+    fap = fetch -ap
+    unstage = reset HEAD --
+    last = log -1 HEAD
+    graph = log --graph --oneline --abbrev-commit --decorate --all
+
+[credential]
+    helper = path to git credential manager
