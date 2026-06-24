@@ -1,16 +1,20 @@
 # This is Git's per-user configuration file.
 [user]
-# Please adapt and uncomment the following lines:
     name = your name
     email = your email
+
 [core]
     editor = nvim
+
 [alias]
     br = branch
     co = checkout
     ci = commit
     st = status
     difs = diff --staged
+    adp = add --patch
+    ade = add --edit
+    save = commit -am "Save"
     ss = stash
     ssl = stash list
     ssa = stash apply
