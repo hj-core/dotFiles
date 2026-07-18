@@ -1,0 +1,77 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "formatter": true,
+  "lsp": true,
+  "share": "disabled",
+  "autoupdate": "notify",
+  "permission": {
+    "external_directory": "ask",
+    "read": {
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.env.example": "allow"
+    },
+    "edit": "ask",
+    "bash": {
+      "*": "ask",
+      "go *": "allow",
+      "cargo *": "allow",
+      "cat *": "allow",
+      "grep *": "allow",
+      "rg *": "allow",
+      "git log*": "allow",
+      "git diff*": "allow",
+      "git stash*": "allow",
+      "git status*": "allow",
+      "*git push*": "ask",
+      "*git reset*": "ask",
+      "*git commit*": "ask",
+      "*git restore*": "ask",
+      "*git checkout*": "ask",
+      "*rm *": "ask"
+    }
+  },
+  "default_agent": "plan",
+  "agent": {
+    "plan": {
+      "model": "opencode-go/deepseek-v4-pro",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      }
+    },
+    "build": {
+      "model": "opencode-go/deepseek-v4-flash",
+      "permission": {
+        "edit": {
+          "*": "allow",
+          "*.env": "deny",
+          "*.env.*": "deny",
+          "*.env.example": "allow"
+        }
+      }
+    },
+    "review": {
+      "mode": "subagent",
+      "model": "opencode-go/minimax-m3",
+      "permission": {
+        "edit": "deny"
+      }
+    },
+    "general": {
+      "model": "opencode-go/deepseek-v4-flash"
+    },
+    "explore": {
+      "model": "opencode-go/deepseek-v4-flash"
+    },
+    "compaction": {
+      "model": "opencode-go/deepseek-v4-flash"
+    },
+    "title": {
+      "model": "opencode-go/deepseek-v4-flash"
+    },
+    "summary": {
+      "model": "opencode-go/deepseek-v4-flash"
+    }
+  }
+}
