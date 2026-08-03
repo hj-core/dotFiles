@@ -5,7 +5,12 @@
   "share": "disabled",
   "autoupdate": "notify",
   "permission": {
-    "external_directory": "ask",
+    "external_directory": {
+      "*": "ask",
+      "~/go/pkg/mod/*": "allow"
+    },
+    "glob": "allow",
+    "grep": "allow",
     "read": {
       "*.env": "deny",
       "*.env.*": "deny",
@@ -15,26 +20,33 @@
     "bash": {
       "*": "ask",
       "go *": "allow",
+      "gofmt *": "allow",
+      "golangci-lint *": "allow",
       "cargo *": "allow",
+      "ls *": "allow",
+      "find *": "allow",
+      "head *": "allow",
+      "tail *": "allow",
       "cat *": "allow",
       "grep *": "allow",
       "rg *": "allow",
-      "git log*": "allow",
-      "git diff*": "allow",
-      "git stash*": "allow",
-      "git status*": "allow",
-      "*git push*": "ask",
-      "*git reset*": "ask",
-      "*git commit*": "ask",
-      "*git restore*": "ask",
-      "*git checkout*": "ask",
-      "*rm *": "ask"
+      "wc *": "allow",
+      "git log *": "allow",
+      "git diff *": "allow",
+      "git stash *": "allow",
+      "git status *": "allow",
+      "git push *": "ask",
+      "git reset *": "ask",
+      "git commit *": "ask",
+      "git restore *": "ask",
+      "git checkout *": "ask",
+      "rm *": "ask"
     }
   },
   "default_agent": "plan",
   "agent": {
     "plan": {
-      "model": "opencode-go/deepseek-v4-pro",
+      "model": "opencode-go/deepseek-v4-flash",
       "permission": {
         "edit": "deny",
         "bash": "deny"
