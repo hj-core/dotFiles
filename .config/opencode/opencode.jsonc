@@ -24,13 +24,18 @@
       "golangci-lint *": "allow",
       "cargo *": "allow",
       "ls *": "allow",
+      "wc *": "allow",
       "find *": "allow",
-      "head *": "allow",
-      "tail *": "allow",
-      "cat *": "allow",
       "grep *": "allow",
       "rg *": "allow",
-      "wc *": "allow",
+      "which *": "allow",
+      "head *": "allow",
+      "tail *": "allow",
+      "sort *": "allow",
+      "cat *": "allow",
+      "awk *": "allow",
+      "echo *": "allow",
+      "git show *": "allow",
       "git log *": "allow",
       "git diff *": "allow",
       "git stash *": "allow",
@@ -47,12 +52,14 @@
   "agent": {
     "plan": {
       "model": "opencode-go/deepseek-v4-flash",
+      "mode": "primary",
       "permission": {
         "edit": "deny",
         "bash": "deny"
       }
     },
     "build": {
+      "mode": "primary",
       "model": "opencode-go/deepseek-v4-flash",
       "permission": {
         "edit": {
@@ -63,9 +70,24 @@
         }
       }
     },
-    "review": {
-      "mode": "subagent",
+    "discuss": {
+      "model": "opencode-go/deepseek-v4-flash",
+      "mode": "primary",
+      "permission": {
+        "edit": "deny",
+        "bash": "deny"
+      }
+    },
+    "review-plan": {
       "model": "opencode-go/minimax-m3",
+      "mode": "subagent",
+      "permission": {
+        "edit": "deny"
+      }
+    },
+    "review-code": {
+      "model": "opencode-go/hy3",
+      "mode": "subagent",
       "permission": {
         "edit": "deny"
       }
