@@ -1,62 +1,83 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "model": "opencode-go/deepseek-v4-flash",
   "formatter": true,
   "lsp": true,
   "share": "disabled",
   "autoupdate": "notify",
+  "default_agent": "plan",
+  "watcher": {
+    "ignore": ["node_modules/**", "dist/**", "coverage/**", ".next/**"],
+  },
+  "compaction": {
+    "auto": true,
+    "reserved": 15000,
+  },
   "permission": {
     "external_directory": {
-      "*": "ask",
-      "~/go/pkg/mod/*": "allow"
+      "~/go/pkg/mod/*": "allow",
     },
-    "glob": "allow",
-    "grep": "allow",
     "read": {
+      "*": "allow",
       "*.env": "deny",
       "*.env.*": "deny",
-      "*.env.example": "allow"
+      "*.env.example": "allow",
     },
-    "edit": "ask",
     "bash": {
       "*": "ask",
       "go *": "allow",
       "gofmt *": "allow",
       "golangci-lint *": "allow",
-      "cargo *": "allow",
+      "pnpm exec prettier *": "allow",
       "ls *": "allow",
       "wc *": "allow",
       "find *": "allow",
+      "find *-delete*": "deny",
+      "find *-exec*": "deny",
       "grep *": "allow",
       "rg *": "allow",
+      "sed *": "allow",
+      "awk *": "allow",
       "which *": "allow",
       "head *": "allow",
       "tail *": "allow",
       "sort *": "allow",
+      "uniq *": "allow",
       "cat *": "allow",
-      "awk *": "allow",
+      "cat *.env": "deny",
+      "cat *.env.*": "deny",
+      "cat *.env.example": "allow",
+      "cat ~/.ssh/*": "deny",
+      "cat *.pem": "deny",
       "echo *": "allow",
+      "echo *$*": "deny",
       "git show *": "allow",
       "git log *": "allow",
       "git diff *": "allow",
       "git stash *": "allow",
+      "git stash clear*": "ask",
+      "git stash drop *": "ask",
       "git status *": "allow",
+      "sed *-i*": "ask",
+      "sed *--in-place*": "ask",
+      "awk *-i*": "ask",
+      "awk *@load*": "ask",
       "git push *": "ask",
       "git reset *": "ask",
       "git commit *": "ask",
       "git restore *": "ask",
       "git checkout *": "ask",
-      "rm *": "ask"
-    }
+      "rm *": "ask",
+    },
   },
-  "default_agent": "plan",
   "agent": {
     "plan": {
       "model": "opencode-go/deepseek-v4-flash",
       "mode": "primary",
       "permission": {
         "edit": "deny",
-        "bash": "deny"
-      }
+        "bash": "deny",
+      },
     },
     "build": {
       "mode": "primary",
@@ -66,46 +87,22 @@
           "*": "allow",
           "*.env": "deny",
           "*.env.*": "deny",
-          "*.env.example": "allow"
-        }
-      }
+          "*.env.example": "allow",
+        },
+      },
     },
-    "discuss": {
-      "model": "opencode-go/deepseek-v4-flash",
-      "mode": "primary",
-      "permission": {
-        "edit": "deny",
-        "bash": "deny"
-      }
-    },
-    "review-plan": {
-      "model": "opencode-go/minimax-m3",
-      "mode": "subagent",
-      "permission": {
-        "edit": "deny"
-      }
-    },
-    "review-code": {
+    "review": {
+      "description": "Reviews diffs for constraint violations and best practices; read-only",
       "model": "opencode-go/hy3",
       "mode": "subagent",
       "permission": {
-        "edit": "deny"
-      }
+        "edit": "deny",
+      },
     },
-    "general": {
-      "model": "opencode-go/deepseek-v4-flash"
-    },
-    "explore": {
-      "model": "opencode-go/deepseek-v4-flash"
-    },
-    "compaction": {
-      "model": "opencode-go/deepseek-v4-flash"
-    },
-    "title": {
-      "model": "opencode-go/deepseek-v4-flash"
-    },
-    "summary": {
-      "model": "opencode-go/deepseek-v4-flash"
-    }
-  }
+    "general": { "model": "opencode-go/deepseek-v4-flash" },
+    "explore": { "model": "opencode-go/deepseek-v4-flash" },
+    "compaction": { "model": "opencode-go/deepseek-v4-flash" },
+    "title": { "model": "opencode-go/deepseek-v4-flash" },
+    "summary": { "model": "opencode-go/deepseek-v4-flash" },
+  },
 }
