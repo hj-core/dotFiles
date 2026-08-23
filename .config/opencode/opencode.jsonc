@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "opencode-go/mimo-v2.5",
+  "model": "opencode-go/ox-alpha-free",
   "formatter": true,
   "lsp": true,
   "share": "disabled",
@@ -8,10 +8,6 @@
   "default_agent": "plan",
   "watcher": {
     "ignore": ["node_modules/**", "dist/**", "coverage/**", ".next/**"],
-  },
-  "compaction": {
-    "auto": true,
-    "reserved": 15000,
   },
   "permission": {
     "external_directory": {
@@ -25,7 +21,6 @@
     },
     "bash": {
       "*": "ask",
-      "cd ~/taresync/*": "allow",
       "go *": "allow",
       "gofmt *": "allow",
       "golangci-lint *": "allow",
@@ -73,7 +68,7 @@
   },
   "agent": {
     "plan": {
-      "model": "opencode-go/minimax-m3",
+      "model": "opencode-go/ox-alpha-free",
       "mode": "primary",
       "permission": {
         "edit": "deny",
@@ -82,7 +77,7 @@
     },
     "build": {
       "mode": "primary",
-      "model": "opencode-go/mimo-v2.5",
+      "model": "opencode-go/ox-alpha-free",
       "permission": {
         "edit": {
           "*": "allow",
@@ -100,10 +95,10 @@
         "edit": "deny",
       },
     },
-    "general": { "model": "opencode-go/mimo-v2.5" },
-    "explore": { "model": "opencode-go/mimo-v2.5" },
-    "compaction": { "model": "opencode-go/mimo-v2.5" },
-    "title": { "model": "opencode-go/mimo-v2.5" },
-    "summary": { "model": "opencode-go/mimo-v2.5" },
+    "general": { "model": "opencode-go/ox-alpha-free" },
+    "explore": { "model": "opencode-go/ox-alpha-free" },
+    "compaction": { "model": "opencode-go/ox-alpha-free" },
+    "title": { "model": "opencode-go/ox-alpha-free" },
+    "summary": { "model": "opencode-go/ox-alpha-free" },
   },
 }
