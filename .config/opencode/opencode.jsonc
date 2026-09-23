@@ -1,16 +1,34 @@
+// Global OpenCode configuration.
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "opencode-go/deepseek-v4.1-flash",
+
+  // --- Session defaults -----------------------------------------------------
+  "model": "opencode-go/mimo-v2.6-flash",
   "default_agent": "plan",
   "share": "disabled",
   "formatter": true,
   "watcher": {
-    "ignore": ["node_modules/**", "dist/**", "coverage/**", ".next/**"]
+    "ignore": ["node_modules/**", "dist/**", "coverage/**", ".next/**"],
   },
-  "permissions": [
-    { "action": "external_directory", "resource": "~/go/pkg/mod/*", "effect": "allow" },
-    { "action": "external_directory", "resource": "/tmp/opencode/*", "effect": "allow" },
 
+  // --- Permissions ----------------------------------------------------------
+  // Rules evaluate top to bottom; the last match wins. Broad rules come first,
+  // narrower exceptions follow, and secret-file guards close the list.
+  "permissions": [
+    // Directory boundary for paths outside the project; covers read, edit, and
+    // shell directory checks.
+    {
+      "action": "external_directory",
+      "resource": "~/go/pkg/mod/*",
+      "effect": "allow",
+    },
+    {
+      "action": "external_directory",
+      "resource": "/tmp/opencode/*",
+      "effect": "allow",
+    },
+
+    // Read tool: general allow; secret files and keys are denied.
     { "action": "read", "resource": "*", "effect": "allow" },
     { "action": "read", "resource": "*.env", "effect": "deny" },
     { "action": "read", "resource": "*.env.*", "effect": "deny" },
@@ -19,6 +37,7 @@
     { "action": "read", "resource": "*.key", "effect": "deny" },
     { "action": "read", "resource": "~/.ssh/**", "effect": "deny" },
 
+    // Edit tool: general allow; secret files and keys are denied.
     { "action": "edit", "resource": "*", "effect": "allow" },
     { "action": "edit", "resource": "*.env", "effect": "deny" },
     { "action": "edit", "resource": "*.env.*", "effect": "deny" },
@@ -27,24 +46,54 @@
     { "action": "edit", "resource": "*.key", "effect": "deny" },
     { "action": "edit", "resource": "~/.ssh/**", "effect": "deny" },
 
-    { "action": "shell", "resource": "*", "effect": "ask" },
+    // ---- Shell ----
+    // Catch-all: commands with no matching allow rule prompt.
+
+    // Build, lint, and format toolchain.
     { "action": "shell", "resource": "go *", "effect": "allow" },
     { "action": "shell", "resource": "gofmt *", "effect": "allow" },
     { "action": "shell", "resource": "golangci-lint *", "effect": "allow" },
-    { "action": "shell", "resource": "pnpm exec prettier *", "effect": "allow" },
+    { "action": "shell", "resource": "goimports *", "effect": "allow" },
+    {
+      "action": "shell",
+      "resource": "pnpm exec prettier *",
+      "effect": "allow",
+    },
+    {
+      "action": "shell",
+      "resource": "node_modules/.bin/prettier *",
+      "effect": "allow",
+    },
 
     // A directory change is inert; the commands it prefixes are checked individually.
     { "action": "shell", "resource": "cd *", "effect": "allow" },
 
+    // Listing, counting, and lookup.
     { "action": "shell", "resource": "ls *", "effect": "allow" },
     { "action": "shell", "resource": "wc *", "effect": "allow" },
     { "action": "shell", "resource": "which *", "effect": "allow" },
+
+    // Output helpers; commands containing `$` are denied.
     { "action": "shell", "resource": "echo *", "effect": "allow" },
     { "action": "shell", "resource": "echo *$*", "effect": "deny" },
+    { "action": "shell", "resource": "printf *", "effect": "allow" },
+    { "action": "shell", "resource": "printf *$*", "effect": "deny" },
+
+    // Filesystem search; `-delete` and `-exec` are denied.
     { "action": "shell", "resource": "find *", "effect": "allow" },
     { "action": "shell", "resource": "find *-delete*", "effect": "deny" },
     { "action": "shell", "resource": "find *-exec*", "effect": "deny" },
 
+    // Directory creation and copy; copy denies match secret source operands.
+    { "action": "shell", "resource": "mkdir *", "effect": "allow" },
+    { "action": "shell", "resource": "cp *", "effect": "allow" },
+    { "action": "shell", "resource": "cp *.env *", "effect": "deny" },
+    { "action": "shell", "resource": "cp *.env.* *", "effect": "deny" },
+    { "action": "shell", "resource": "cp *.env.example *", "effect": "allow" },
+    { "action": "shell", "resource": "cp *.pem *", "effect": "deny" },
+    { "action": "shell", "resource": "cp *.key *", "effect": "deny" },
+
+    // File content inspection with per-tool secret-file guards.
     { "action": "shell", "resource": "cat *", "effect": "allow" },
     { "action": "shell", "resource": "cat *.env", "effect": "deny" },
     { "action": "shell", "resource": "cat *.env.*", "effect": "deny" },
@@ -69,29 +118,35 @@
     { "action": "shell", "resource": "rg *.key", "effect": "deny" },
     { "action": "shell", "resource": "rg */.ssh/*", "effect": "deny" },
 
-    // Read-only text inspection. In-place variants stay gated.
+    // Stream inspection and reshaping; `sort -o` and perl in-place flags are denied.
     { "action": "shell", "resource": "head *", "effect": "allow" },
     { "action": "shell", "resource": "tail *", "effect": "allow" },
     { "action": "shell", "resource": "cmp *", "effect": "allow" },
+    { "action": "shell", "resource": "diff *", "effect": "allow" },
+    { "action": "shell", "resource": "cut *", "effect": "allow" },
 
     { "action": "shell", "resource": "sort *", "effect": "allow" },
     { "action": "shell", "resource": "sort *-o*", "effect": "deny" },
     { "action": "shell", "resource": "uniq *", "effect": "allow" },
+    { "action": "shell", "resource": "comm *", "effect": "allow" },
 
     { "action": "shell", "resource": "sed *", "effect": "allow" },
-    { "action": "shell", "resource": "sed -i*", "effect": "deny" },
-    { "action": "shell", "resource": "sed --in-place*", "effect": "deny" },
     { "action": "shell", "resource": "awk *", "effect": "allow" },
 
     { "action": "shell", "resource": "perl *", "effect": "allow" },
     { "action": "shell", "resource": "perl *-i*", "effect": "deny" },
     { "action": "shell", "resource": "perl *-pi*", "effect": "deny" },
 
+    // Git: inspection, staging, and stash are allowed; commit, push, reset,
+    // restore, checkout, and stash clear/drop prompt.
     { "action": "shell", "resource": "git show *", "effect": "allow" },
     { "action": "shell", "resource": "git log *", "effect": "allow" },
     { "action": "shell", "resource": "git diff *", "effect": "allow" },
     { "action": "shell", "resource": "git grep *", "effect": "allow" },
     { "action": "shell", "resource": "git status *", "effect": "allow" },
+    { "action": "shell", "resource": "git rev-list *", "effect": "allow" },
+    { "action": "shell", "resource": "git rev-parse *", "effect": "allow" },
+    { "action": "shell", "resource": "git add *", "effect": "allow" },
     { "action": "shell", "resource": "git stash *", "effect": "allow" },
     { "action": "shell", "resource": "git stash clear*", "effect": "ask" },
     { "action": "shell", "resource": "git stash drop *", "effect": "ask" },
@@ -101,47 +156,123 @@
     { "action": "shell", "resource": "git restore *", "effect": "ask" },
     { "action": "shell", "resource": "git checkout *", "effect": "ask" },
 
-    { "action": "shell", "resource": "rm *", "effect": "ask" },
-    { "action": "shell", "resource": "rm -f /tmp/opencode/*", "effect": "allow" },
+    // `git -C` mirrors of the git rules; the repository path is fixed.
+    // Subcommands without a mirror prompt.
+    {
+      "action": "shell",
+      "resource": "git -C /home/hj-core/project status *",
+      "effect": "allow",
+    },
+    {
+      "action": "shell",
+      "resource": "git -C /home/hj-core/project diff *",
+      "effect": "allow",
+    },
+    {
+      "action": "shell",
+      "resource": "git -C /home/hj-core/project log *",
+      "effect": "allow",
+    },
+    {
+      "action": "shell",
+      "resource": "git -C /home/hj-core/project show *",
+      "effect": "allow",
+    },
+    {
+      "action": "shell",
+      "resource": "git -C /home/hj-core/project grep *",
+      "effect": "allow",
+    },
+    {
+      "action": "shell",
+      "resource": "git -C /home/hj-core/project rev-parse *",
+      "effect": "allow",
+    },
+    {
+      "action": "shell",
+      "resource": "git -C /home/hj-core/project add *",
+      "effect": "allow",
+    },
+    {
+      "action": "shell",
+      "resource": "git -C /home/hj-core/project stash *",
+      "effect": "allow",
+    },
+    {
+      "action": "shell",
+      "resource": "git -C /home/hj-core/project stash clear*",
+      "effect": "ask",
+    },
+    {
+      "action": "shell",
+      "resource": "git -C /home/hj-core/project stash drop *",
+      "effect": "ask",
+    },
 
-    // Secret-file guards cover every inspection tool above; last match wins.
+    // Removal prompts; `/tmp/opencode` cleanup is allowed.
+    { "action": "shell", "resource": "rm *", "effect": "ask" },
+    {
+      "action": "shell",
+      "resource": "rm -f /tmp/opencode/*",
+      "effect": "allow",
+    },
+    {
+      "action": "shell",
+      "resource": "rm -rf /tmp/opencode/*",
+      "effect": "allow",
+    },
+
+    // Secret-file guards; their final position overrides every earlier match.
     { "action": "shell", "resource": "*.env", "effect": "deny" },
     { "action": "shell", "resource": "*.env.*", "effect": "deny" },
     { "action": "shell", "resource": "*.env.example", "effect": "allow" },
     { "action": "shell", "resource": "*.pem", "effect": "deny" },
     { "action": "shell", "resource": "*.key", "effect": "deny" },
-    { "action": "shell", "resource": "*/.ssh/*", "effect": "deny" }
+    { "action": "shell", "resource": "*/.ssh/*", "effect": "deny" },
   ],
+
+  // --- Agents ---------------------------------------------------------------
   "agents": {
+    // Planner: shell denied; edits limited to its scratch directory.
     "plan": {
-      "model": "opencode-go/deepseek-v4.1-flash",
+      "model": "opencode-go/mimo-v2.6-flash",
       "mode": "primary",
       "permissions": [
         { "action": "edit", "resource": "*", "effect": "deny" },
-        { "action": "edit", "resource": "~/.opencode/plan/**", "effect": "allow" },
-        { "action": "shell", "resource": "*", "effect": "deny" }
-      ]
+        {
+          "action": "edit",
+          "resource": "~/.opencode/plan/**",
+          "effect": "allow",
+        },
+        { "action": "shell", "resource": "*", "effect": "deny" },
+      ],
     },
+
+    // Default worker: general edit allow with secret-file denies.
     "build": {
-      "model": "opencode-go/deepseek-v4.1-flash",
+      "model": "opencode-go/mimo-v2.6-flash",
       "mode": "primary",
       "permissions": [
         { "action": "edit", "resource": "*", "effect": "allow" },
         { "action": "edit", "resource": "*.env", "effect": "deny" },
         { "action": "edit", "resource": "*.env.*", "effect": "deny" },
-        { "action": "edit", "resource": "*.env.example", "effect": "allow" }
-      ]
+        { "action": "edit", "resource": "*.env.example", "effect": "allow" },
+      ],
     },
+
+    // Read-only review subagent.
     "review": {
       "description": "Reviews changes for correctness, regressions, and missing tests",
-      "model": "opencode-go/glm-5.3-flash",
+      "model": "opencode-go/deepseek-v4.1-flash",
       "mode": "subagent",
-      "permissions": [{ "action": "edit", "resource": "*", "effect": "deny" }]
+      "permissions": [{ "action": "edit", "resource": "*", "effect": "deny" }],
     },
-    "general": { "model": "opencode-go/deepseek-v4.1-flash" },
-    "explore": { "model": "opencode-go/deepseek-v4.1-flash" },
-    "compaction": { "model": "opencode-go/deepseek-v4.1-flash" },
-    "title": { "model": "opencode-go/deepseek-v4.1-flash" },
-    "summary": { "model": "opencode-go/deepseek-v4.1-flash" }
-  }
+
+    // Auxiliary agents: model overrides only.
+    "general": { "model": "opencode-go/mimo-v2.6-flash" },
+    "explore": { "model": "opencode-go/mimo-v2.6-flash" },
+    "compaction": { "model": "opencode-go/mimo-v2.6-flash" },
+    "title": { "model": "opencode-go/mimo-v2.6-flash" },
+    "summary": { "model": "opencode-go/mimo-v2.6-flash" },
+  },
 }
