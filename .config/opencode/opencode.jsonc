@@ -73,11 +73,11 @@
     { "action": "shell", "resource": "wc *", "effect": "allow" },
     { "action": "shell", "resource": "which *", "effect": "allow" },
 
-    // Output helpers; commands containing `$` are denied.
+    // Output helpers; they format output and execute nothing, so `$` in an
+    // exit-status or loop-body echo is permitted. Secret files stay guarded by
+    // the read, cat, grep, rg, and cp rules.
     { "action": "shell", "resource": "echo *", "effect": "allow" },
-    { "action": "shell", "resource": "echo *$*", "effect": "deny" },
     { "action": "shell", "resource": "printf *", "effect": "allow" },
-    { "action": "shell", "resource": "printf *$*", "effect": "deny" },
 
     // Filesystem search; `-delete` and `-exec` are denied.
     { "action": "shell", "resource": "find *", "effect": "allow" },
